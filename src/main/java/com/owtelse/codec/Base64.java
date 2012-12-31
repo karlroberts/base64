@@ -1,5 +1,7 @@
 package com.owtelse.codec;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Author: karl roberts
  * Date: 2-Mar-2005
@@ -12,34 +14,25 @@ package com.owtelse.codec;
  * 
  * the Base64 encoding can be represented by 
  * <img src="http://www.javaworld.com/javaworld/javatips/images/Base64Encoding.gif"/>
- * 
  * @author jkyr
+ *
  */
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 public class Base64 {
+
+	public static final String DEFAULT_ENCODING = "UTF-8";
 
 	/*
 	 * The methods of this class are static. Do not instantiate this class. Use
 	 * its static methods to get the encoded/decoded results
-	 */
-
-	public final static String base64Encode(String strInput, String charEncoding) throws UnsupportedEncodingException {
-		if (strInput == null)
-			return null;
-		byte byteData[] = strInput.getBytes(charEncoding);
-		return new String(base64Encode(byteData));
+	 */	
+	public static String encode(byte[] byteData) throws UnsupportedEncodingException {
+		return encode(byteData,DEFAULT_ENCODING);
 	}
-
-	public final static String base64Decode(String strInput, String charEncoding) throws UnsupportedEncodingException {
-		if (strInput == null)
-			return null;
-		byte[] byteData = strInput.getBytes(charEncoding);
-		return new String(base64Decode(byteData), charEncoding);
+	public static String encode(byte[] byteData, String encoding) throws UnsupportedEncodingException {
+		if(byteData == null) { return null; }
+		return new String(_encode(byteData),encoding);
 	}
-
-	public final static byte[] base64Encode(byte[] byteData) {
+	public final static byte[] _encode(byte[] byteData) {
 		/* If we received a null argument, exit this method. */
 		if (byteData == null)
 			return null;
@@ -106,8 +99,16 @@ public class Base64 {
 
 		return byteDest;
 	}
+	
+	public final static byte[] decode(String encoded) throws IllegalArgumentException, UnsupportedEncodingException {
+		return decode(encoded,DEFAULT_ENCODING);
+	}
+	public final static byte[] decode(String encoded, String encoding) throws IllegalArgumentException, UnsupportedEncodingException {
+		if(null == encoded) { return null; }
+		return _decode(encoded.getBytes(encoding));
+	}
 
-	public final static byte[] base64Decode(byte[] byteData) throws IllegalArgumentException {
+	public final static byte[] _decode(byte[] byteData) throws IllegalArgumentException {
 		/* If we received a null argument, exit this method. */
 		if (byteData == null)
 			return null;
@@ -150,7 +151,7 @@ public class Base64 {
 		 * important as I use the '<' operator which looks at the hex value of
 		 * these ASCII chars. So convert from the smallest up
 		 * 
-		 * do all of this in a new arry so as not to edit the origional input
+		 * do all of this in a new array so as not to edit the original input
 		 */
 		for (iSrcIdx = 0; iSrcIdx < reviSrcIdx; iSrcIdx++) {
 			if (byteData[iSrcIdx] == '+')

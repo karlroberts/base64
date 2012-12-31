@@ -2,6 +2,7 @@ package com.owtelse.codec;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
@@ -11,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ibm.jvm.util.ByteArrayOutputStream;
+
 
 
 
@@ -26,7 +27,7 @@ import static com.owtelse.codec.Base64.*;
 public class Base64Test {
 	public static final String D1_expected = "Dummy[10,26.8889,1.7976931348623157E308,5698765.999876500107347965240478515625,Hello Karl :-)]";
 	public static final String D3_expected = "Dummy[15,55.0,4567.0,5698765.999876500107347965240478515625,Hello Karl Again :-)]";
-	
+	public static final String WibbleWobble1_Encoded = "V2liYmxlV29iYmxlMQ==";
 	Dummy d1;
 	Dummy d2;
 	Dummy d3;
@@ -113,36 +114,47 @@ public class Base64Test {
 	
 	@Test 
 	public void testBase64_null1() throws UnsupportedEncodingException {
-		String x = base64Encode(null, "UTF-8");
+		String x = encode(null, "UTF-8");
 		assertNull(x);
 	}
 	@Test 
 	public void testBase64_1a_badEncoding()  {
 		String x;
 		try {
-			x = base64Encode("hello", "WIbbleWobble");
+			x = encode("hello".getBytes(), "WIbbleWobble");
 			fail("shouldn't get here");
 		} catch (UnsupportedEncodingException e) {
 			assertNotNull(e);
 		}
 	}
 	
+	/**
+	 * Test encoding, use this to generate a BASE64 encoded Key to use in other key tests.
+	 */
 	@Test 
-	public void testBase64_null2() {
-		byte[] x = base64Encode(null);
-		assertNull(x);
+	public void testBase64_EncodeAString()  {
+		String x;
+		try {
+			x = encode("WibbleWobble1".getBytes(), "UTF-8");			
+			assertNotNull(x);
+			assertEquals(WibbleWobble1_Encoded, x);
+		} catch (UnsupportedEncodingException e) {
+			fail("shouldn't get here");
+		}
 	}
+	
 	
 	@Test 
 	public void testBase64_null3() throws UnsupportedEncodingException {
-		String x = base64Decode(null, "UTF-8");
+		byte[] x = decode(null, "UTF-8");
 		assertNull(x);
 	}
+	
 	@Test 
 	public void testBase64_badEncoding()  {
-		String x;
+		byte[] x;
 		try {
-			x = base64Decode("hello", "WIbbleWobble");
+			x = decode("hello", "WIbbleWobble");
 			fail("shouldn't get here");
 		} catch (UnsupportedEncodingException e) {
 			assertNotNull(e);
@@ -150,16 +162,16 @@ public class Base64Test {
 	}
 	
 	@Test 
-	public void testBase64_null4() {
-		byte[] x = base64Decode(null);
+	public void testBase64_null4() throws IllegalArgumentException, UnsupportedEncodingException {
+		byte[] x = decode(null);
 		assertNull(x);
 	}
 	
 	@Test 
-	public void testBase64_handlesNotEncoded() {
+	public void testBase64_handlesNotEncoded() throws UnsupportedEncodingException {
 		byte[] x;
 		try {
-			x = base64Decode("ab===dfds========".getBytes());
+			x = decode("ab===dfds========");
 			fail("should not get here");
 		} catch (IllegalArgumentException e) {
 			assertNotNull(e);
@@ -167,11 +179,9 @@ public class Base64Test {
 	}
 	
 	@Test 
-	public void testBase64_handlesAllPadding() {
-		
-			byte[] x = base64Decode("===========".getBytes());
-			assertNull(x);
-				
+	public void testBase64_handlesAllPadding() throws IllegalArgumentException, UnsupportedEncodingException {		
+			byte[] x = decode("===========");
+			assertNull(x);				
 	}
 	
 	@Test 
@@ -181,8 +191,8 @@ public class Base64Test {
 		assertTrue((testDummy instanceof java.io.Serializable));
 		
 		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
+		byte[] strSerializedDummy = os.toByteArray();
+		String strSerializedDummyEncoded = encode(strSerializedDummy , "UTF-8");
 		assertNotNull(strSerializedDummyEncoded);
 		assertFalse(strSerializedDummyEncoded.length() == 0);
 	}
@@ -194,8 +204,8 @@ public class Base64Test {
 		assertTrue((testDummy instanceof java.io.Serializable));
 		
 		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
+		byte[] strSerializedDummy = os.toByteArray();
+		String strSerializedDummyEncoded = encode(strSerializedDummy , "UTF-8");
 		assertNotNull(strSerializedDummyEncoded);
 		assertFalse(strSerializedDummyEncoded.length() == 0);
 	}
@@ -207,8 +217,8 @@ public class Base64Test {
 		assertTrue((testDummy instanceof java.io.Serializable));
 		
 		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
+		byte[] strSerializedDummy = os.toByteArray();
+		String strSerializedDummyEncoded = encode(strSerializedDummy , "UTF-8");
 		assertNotNull(strSerializedDummyEncoded);
 		assertFalse(strSerializedDummyEncoded.length() == 0);
 	}
@@ -220,32 +230,13 @@ public class Base64Test {
 		assertTrue((testDummy instanceof java.io.Serializable));
 		
 		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
+		byte[] strSerializedDummy = os.toByteArray();
+		String strSerializedDummyEncoded = encode(strSerializedDummy , "UTF-8");
 		assertNotNull(strSerializedDummyEncoded);
 		assertFalse(strSerializedDummyEncoded.length() == 0);
 	}
 	
-	
-	
-	@Test 
-	public void testBase64_DummySerialized() throws IOException, ClassNotFoundException {
-		Dummy testDummy = d1;
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		assertTrue((testDummy instanceof java.io.Serializable));
-		
-		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
-		
-		assertNotNull(strSerializedDummyEncoded);
-		assertFalse(strSerializedDummyEncoded.length() == 0);
-		
-		String deSerialized = base64Decode(strSerializedDummyEncoded, "UTF-8");
-		assertEquals(strSerializedDummy, deSerialized);
 
-	}
-	
 	@Test 
 	public void testBase64_DummySerialized2() throws IOException, ClassNotFoundException {
 		Dummy testDummy = d1;
@@ -254,12 +245,12 @@ public class Base64Test {
 		
 		testDummy.save(os);
 		byte[] strSerializedDummy = os.toByteArray();
-		byte[] strSerializedDummyEncoded = base64Encode(strSerializedDummy);
+		String strSerializedDummyEncoded = encode(strSerializedDummy);
 		
 		assertNotNull(strSerializedDummyEncoded);
-		assertFalse(strSerializedDummyEncoded.length == 0);
+		assertFalse(strSerializedDummyEncoded.length() == 0);
 		
-		byte[] deSerialized = base64Decode(strSerializedDummyEncoded);
+		byte[] deSerialized = decode(strSerializedDummyEncoded);
 		
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(deSerialized));
 		Dummy temp = (Dummy)ois.readObject();
@@ -269,24 +260,30 @@ public class Base64Test {
 		System.out.println(temp);
 	}
 	
-	
 	@Test 
-	public void testBase64_DummySerialized3() throws IOException, ClassNotFoundException {
-		Dummy testDummy = d3;
+	public void testBase64_DummySerialized2_a() throws IOException, ClassNotFoundException {
+		Dummy testDummy = d1;
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		assertTrue((testDummy instanceof java.io.Serializable));
 		
 		testDummy.save(os);
-		String strSerializedDummy = os.toString("UTF-8");
-		String strSerializedDummyEncoded = base64Encode(strSerializedDummy , "UTF-8");
+		byte[] strSerializedDummy = os.toByteArray();
+		String strSerializedDummyEncoded = encode(strSerializedDummy, "UTF-8");
 		
 		assertNotNull(strSerializedDummyEncoded);
 		assertFalse(strSerializedDummyEncoded.length() == 0);
 		
-		String deSerialized = base64Decode(strSerializedDummyEncoded, "UTF-8");
-		assertEquals(strSerializedDummy, deSerialized);
-
+		byte[] deSerialized = decode(strSerializedDummyEncoded, "UTF-8");
+		
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(deSerialized));
+		Dummy temp = (Dummy)ois.readObject();
+		ois.close();
+		assertNotNull(temp);
+		assertEquals(d1, temp);
+		System.out.println(temp);
 	}
+	
+		
 	
 	@Test 
 	public void testBase64_DummySerialized4() throws IOException, ClassNotFoundException {
@@ -296,12 +293,12 @@ public class Base64Test {
 		
 		testDummy.save(os);
 		byte[] strSerializedDummy = os.toByteArray();
-		byte[] strSerializedDummyEncoded = base64Encode(strSerializedDummy);
+		String strSerializedDummyEncoded = encode(strSerializedDummy);
 		
 		assertNotNull(strSerializedDummyEncoded);
-		assertFalse(strSerializedDummyEncoded.length == 0);
+		assertFalse(strSerializedDummyEncoded.length() == 0);
 		
-		byte[] deSerialized = base64Decode(strSerializedDummyEncoded);
+		byte[] deSerialized = decode(strSerializedDummyEncoded);
 		
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(deSerialized));
 		Dummy temp = (Dummy)ois.readObject();

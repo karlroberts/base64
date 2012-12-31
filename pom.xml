@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.allianz</groupId>
-  <artifactId>urlsign</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>com.owtelse.codec</groupId>
+  <artifactId>base64</artifactId>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>foo</name>
-  <url>http://maven.apache.org</url>
+  <name>Base64</name>
+  
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,14 +21,10 @@
       <version>4.6</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-		<groupId>net.iharder</groupId>
-		<artifactId>base64</artifactId>
-		<version>2.3.8</version>
-	</dependency>
   </dependencies>
 
 	<build>
+	<finalName>Base64</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -42,4 +38,3 @@
 	</build>
   
 </project>
-
