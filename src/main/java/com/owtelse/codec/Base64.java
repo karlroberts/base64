@@ -26,16 +26,15 @@ public class Base64 {
 	 * its static methods to get the encoded/decoded results
 	 */	
 	public static String encode(byte[] byteData) throws UnsupportedEncodingException {
-		return encode(byteData,DEFAULT_ENCODING);
+		return encode(byteData, DEFAULT_ENCODING);
 	}
 	public static String encode(byte[] byteData, String encoding) throws UnsupportedEncodingException {
-		if(byteData == null) { return null; }
+		if(byteData == null) { throw new IllegalArgumentException("byteData cannot be null"); }
 		return new String(_encode(byteData),encoding);
 	}
 	public final static byte[] _encode(byte[] byteData) {
 		/* If we received a null argument, exit this method. */
-		if (byteData == null)
-			return null;
+		if (byteData == null) { throw new IllegalArgumentException("byteData cannot be null"); }
 
 		/*
 		 * Declare working variables including an array of bytes that will
@@ -100,18 +99,17 @@ public class Base64 {
 		return byteDest;
 	}
 	
-	public final static byte[] decode(String encoded) throws IllegalArgumentException, UnsupportedEncodingException {
+	public final static byte[] decode(String encoded) throws UnsupportedEncodingException {
 		return decode(encoded,DEFAULT_ENCODING);
 	}
 	public final static byte[] decode(String encoded, String encoding) throws IllegalArgumentException, UnsupportedEncodingException {
-		if(null == encoded) { return null; }
+		if(null == encoded) { throw new IllegalArgumentException("byteData cannot be null"); }
 		return _decode(encoded.getBytes(encoding));
 	}
 
 	public final static byte[] _decode(byte[] byteData) throws IllegalArgumentException {
 		/* If we received a null argument, exit this method. */
-		if (byteData == null)
-			return null;
+		if (byteData == null) { throw new IllegalArgumentException("byteData cannot be null"); }
 
 		/*
 		 * Declare working variables including an array of bytes that will

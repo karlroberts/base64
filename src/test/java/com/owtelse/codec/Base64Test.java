@@ -114,8 +114,14 @@ public class Base64Test {
 	
 	@Test 
 	public void testBase64_null1() throws UnsupportedEncodingException {
-		String x = encode(null, "UTF-8");
-		assertNull(x);
+    String x = null;
+    try {
+      x = encode(null, "UTF-8");
+      fail("should not get here");
+    } catch (IllegalArgumentException e) {
+      assertNotNull(e);
+    }
+
 	}
 	@Test 
 	public void testBase64_1a_badEncoding()  {
@@ -142,15 +148,19 @@ public class Base64Test {
 			fail("shouldn't get here");
 		}
 	}
-	
-	
-	@Test 
-	public void testBase64_null3() throws UnsupportedEncodingException {
-		byte[] x = decode(null, "UTF-8");
-		assertNull(x);
-	}
-	
-	@Test 
+
+
+@Test
+public void testBase64_null3() throws UnsupportedEncodingException {
+  try {
+    byte[] x = decode(null, "UTF-8");
+    fail("should not get here");
+  } catch (IllegalArgumentException e) {
+    assertNotNull(e);
+  }
+}
+
+@Test
 	public void testBase64_badEncoding()  {
 		byte[] x;
 		try {
@@ -162,10 +172,14 @@ public class Base64Test {
 	}
 	
 	@Test 
-	public void testBase64_null4() throws IllegalArgumentException, UnsupportedEncodingException {
-		byte[] x = decode(null);
-		assertNull(x);
-	}
+	public void testBase64_null4() throws UnsupportedEncodingException {
+    try {
+      byte[] x = decode(null);
+      fail("should not get here");
+    } catch (IllegalArgumentException e) {
+      assertNotNull(e);
+    }
+  }
 	
 	@Test 
 	public void testBase64_handlesNotEncoded() throws UnsupportedEncodingException {
