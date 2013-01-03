@@ -8,23 +8,91 @@
   <packaging>jar</packaging>
 
   <name>Base64</name>
+  <description>Base64 codec that depends on nothing but core java</description>
   
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.6</junit.version>
   </properties>
+  <url>https://github.com/karlroberts/base64</url>
+  <licenses>
+  	<license>
+  		<name>The BSD 3-Clause License</name>
+  		<distribution>repo</distribution>
+  		<url>https://raw.github.com/karlroberts/base64/master/LICENSE</url>
+  		<comments>As well as repo distribution you may also fork the project on github at https://github.com/karlroberts/base64 and build it from source, provided you follow the rules in the License</comments>
+  	</license>
+  </licenses>
+  
+  <scm>
+  	<url>https://github.com/karlroberts/base64</url>
+  	<connection>https://github.com/karlroberts/base64</connection>
+  	<developerConnection>git@github.com:karlroberts/base64.git</developerConnection>
+  </scm>
+  
+  
+  <developers>
+  	<developer>
+  		<name>Karl roberts</name>
+  		<id>karlroberts</id>
+  		<email>github at owtelse dot com</email>
+  		<timezone>+10</timezone>
+  		<properties>
+  			<twitter>MrK4rl</twitter>
+  		</properties>
+  		<roles>
+  			<role>Developer</role>
+  		</roles>
+  	</developer>
+  </developers>
+  
+  <dependencyManagement>
+  	<dependencies>
+	    <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>4.6</version>
+	      <scope>test</scope>
+	    </dependency>
+  </dependencies>
+  </dependencyManagement>
+  
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
 	<build>
 	<finalName>Base64</finalName>
+	<pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+	      </plugin>
+	   </plugins>	
+	</pluginManagement>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -34,6 +102,43 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <executions>
+					<execution>
+						<id>attach-javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+	      </plugin>
 		</plugins>
 	</build>
   
