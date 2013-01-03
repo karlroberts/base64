@@ -9,6 +9,12 @@
     <name>Base64</name>
     <description>Base64 codec that depends on nothing but core java</description>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.6</junit.version>
@@ -28,7 +34,7 @@
 
     <scm>
         <url>https://github.com/karlroberts/base64</url>
-        <connection>https://github.com/karlroberts/base64</connection>
+        <connection>scm:git:https://github.com/karlroberts/base64</connection>
         <developerConnection>scm:git:git@github.com:karlroberts/base64.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
