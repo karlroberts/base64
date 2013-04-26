@@ -3,7 +3,7 @@
 
     <groupId>com.owtelse.codec</groupId>
     <artifactId>base64</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Base64</name>
@@ -36,7 +36,7 @@
         <url>https://github.com/karlroberts/base64</url>
         <connection>scm:git:https://github.com/karlroberts/base64</connection>
         <developerConnection>scm:git:git@github.com:karlroberts/base64.git</developerConnection>
-      <tag>base64-1.0.6</tag>
+      <tag>HEAD</tag>
   </scm>
 
 
