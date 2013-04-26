@@ -349,4 +349,28 @@ public void testBase64_null3() throws UnsupportedEncodingException {
 		}
 	}
 
+	@Test
+	public void testBase64_EncodeZeroLength()  {
+		try {
+			byte[] zero = "".getBytes("UTF-8");
+			String actual = encode(zero);
+			assertNotNull(actual);
+			assertEquals("", actual);
+		} catch (UnsupportedEncodingException e) {
+			fail("shouldn't get here");
+		}
+	}
+
+	@Test
+	public void testBase64_DecodeZeroLength()  {
+		try {
+			byte[] zero = "".getBytes("UTF-8");
+			byte[] actual = decode("");
+			assertNotNull(actual);
+			assertArrayEquals(zero, actual);
+		} catch (UnsupportedEncodingException e) {
+			fail("shouldn't get here");
+		}
+	}
+
 }
