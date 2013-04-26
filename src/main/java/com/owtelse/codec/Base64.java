@@ -148,7 +148,7 @@ public class Base64 {
 		 * need to remove it just make sure that when progressing throug array
 		 * we don't go past reviSrcIdx ;-)
 		 */
-		for (reviSrcIdx = byteData.length; byteData[reviSrcIdx -1] == '=' && reviSrcIdx -1 > 0 ; reviSrcIdx--) {
+		for (reviSrcIdx = byteData.length; reviSrcIdx -1 > 0 && byteData[reviSrcIdx -1] == '='; reviSrcIdx--) {
 			; // do nothing. I'm just interested in value of reviSrcIdx
 		}
 
